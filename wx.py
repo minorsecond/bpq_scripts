@@ -39,7 +39,7 @@ if api_key != "NULL":
         z = x["weather"]
         wx_desc = z[0]["description"]
 
-        print(f"Welcome,{call}\n The current wx conditions in {zip_code} are:")
+        print(f"Welcome,{call}\nThe current wx conditions in {zip_code} are:")
         print(f"Temperature:\t\t{current_temp} F")
         print(f"Feels like:\t\t{feels_like} F")
         print(f"Pressure:\t\t{current_pressure} inches of mercury")
