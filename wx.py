@@ -40,11 +40,11 @@ if api_key != "NULL":
         wx_desc = z[0]["description"]
 
         print(f"Welcome,{call}. The current wx conditions in {zip_code} are:")
-        print(f"Temperature:\t\t{current_temp}°F")
-        print(f"Feels like:\t\t{feels_like}°F")
+        print(f"Temperature:\t\t{current_temp} F")
+        print(f"Feels like:\t\t{feels_like} F")
         print(f"Pressure:\t\t{current_pressure} inches of mercury")
         print(f"Humidity:\t\t{current_humidity}%")
-        print(f"Wx description:\t\t{wx_desc}")
+        print(f"Wx description:\t{wx_desc}")
 
     else:
         print(f"Zip code {zip_code} not found.")
