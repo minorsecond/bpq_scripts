@@ -38,11 +38,14 @@ except KeyError:
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
 call = input()  # capture BPQ call sign that is sent
+print(f"Hello, {call}\n")
+
 zip_code = None
 tries = 0
 if api_key != "NULL":
     while zip_code is None or len(zip_code) != 5 and type(zip_code) != int:
-        zip_code = input("Enter zip code:").strip()
+        zip_code = input("Enter zip code:")
+        zip_code = zip_code.strip()
         tries += 1
         if tries == 3:
             print("Too many invalid entries.\nExiting the program...")
@@ -104,7 +107,7 @@ if api_key != "NULL":
             pass
 
         print(
-            f"Welcome,{call}\nThe current wx conditions in {city_name} as of {timestamp} are:")
+            f"The current wx conditions in {city_name} as of {timestamp} are:")
         print(f"Temperature:\t\t{current_temp} F")
         print(f"Feels like:\t\t{feels_like} F")
         print(f"Pressure:\t\t{current_pressure} inches of mercury")
