@@ -1,12 +1,28 @@
 #!/bin/python
 # Get wx for zip code
 
-import requests
 import configparser
 import os
+from datetime import datetime, timezone
+
+import requests
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(dir_path, "credentials.txt")
+
+
+def deg_to_compass(deg):
+    """
+    Converts degrees to N, NE, SW, etc.
+    :param deg: Double denoting degrees
+    :return: string denoting compass direction
+    """
+
+    val = int((deg / 22.5) + .5)
+    arr = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW",
+           "WSW", "W", "WNW", "NW", "NNW"]
+    return arr[(val % 16)]
+
 
 api_key = "NULL"
 config = configparser.ConfigParser()
@@ -14,7 +30,8 @@ try:
     config.read(config_path)
     api_key = config['DEFAULT']['api_key']
 except KeyError:
-    print("You must first create a credentials file named credentials.txt that adheres to the following format:\n")
+    print(
+        "You must first create a credentials file named credentials.txt that adheres to the following format:\n")
     print("[DEFAULT]\napi_key=YOURAPIKEYHERE")
 
 # base_url variable to store url
@@ -31,7 +48,7 @@ if api_key != "NULL":
             print("Too many invalid entries.\nExiting the program...")
             exit()
 
-    complete_url = f"{base_url}zip={zip_code}&appid={api_key}"
+    complete_url = f"{base_url}zip={zip_code}&appid={api_key}&units=imperial"
     response = requests.get(complete_url)
     x = response.json()
     city_name = x["name"]
@@ -39,19 +56,67 @@ if api_key != "NULL":
     lon = x['coord']['lon']
 
     if x["cod"] != "404":
-        y = x["main"]
-        current_temp = round(1.8 * (y["temp"]-273) + 32)
-        feels_like = round(1.8 * (y["feels_like"]-273) + 32)
-        current_pressure = round(y["pressure"]*.02953, 2)
-        current_humidity = y["humidity"]
+        timestamp = datetime.utcfromtimestamp(x["dt"])
+        timestamp = timestamp.replace(tzinfo=timezone.utc).astimezone(
+            tz=None).strftime("%Y-%m-%d %I:%M %p")
+
+        main = x["main"]
+        wind = x["wind"]
+        current_temp = main["temp"]
+        feels_like = main["feels_like"]
+        current_pressure = round(main["pressure"] * .02953, 2)
+        current_humidity = main["humidity"]
+        wind_speed = wind["speed"]
+        wind_degree = wind["deg"]
+        wind_dir = deg_to_compass(wind_degree)
+        wind_gust = wind["gust"]
         z = x["weather"]
         wx_desc = z[0]["description"]
 
-        print(f"Welcome,{call}\nThe current wx conditions in {city_name} are:")
+        # Try to get rain & snow measurements, if available
+        rain = None
+        snow = None
+        rain_1h = None
+        rain_3h = None
+        snow_1h = None
+        snow_3h = None
+
+        try:
+            rain = x["rain"]
+            rain_1h = rain["1h"]
+            rain_3h = rain["3h"]
+        except KeyError:
+            # Must not have rained
+            pass
+        try:
+            snow = x["snow"]
+            snow_1h = snow["1h"]
+            snow_3h = snow["3h"]
+        except KeyError:
+            # Must not have snowed
+            pass
+
+        print(
+            f"Welcome,{call}\nThe current wx conditions in {city_name} as of {timestamp} are:")
         print(f"Temperature:\t\t{current_temp} F")
         print(f"Feels like:\t\t{feels_like} F")
         print(f"Pressure:\t\t{current_pressure} inches of mercury")
         print(f"Humidity:\t\t{current_humidity}%")
+        print(
+            f"Wind speed is {wind_speed} MPH from the {wind_dir}, gusting up to {wind_gust} MPH.")
+
+        if rain:
+            print(
+                f"It has rained {round(rain_1h * .0393701), 2} inches in the "
+                f"past hour,\n and {round(rain_3h * .0393701), 2} "
+                f"inches in the past 3 hours.")
+
+        if snow:
+            print(
+                f"It has snowed {round(snow_1h * .0393701), 2} inches in the "
+                f"past hour,\n and {round(snow_3h * .0393701), 2} "
+                f"inches in the past 3 hours.")
+
         print(f"Wx description:\t{wx_desc}")
 
     else:
