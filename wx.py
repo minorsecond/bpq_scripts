@@ -69,9 +69,16 @@ if api_key != "NULL":
         wind_speed = wind["speed"]
         wind_degree = wind["deg"]
         wind_dir = deg_to_compass(wind_degree)
-        wind_gust = wind["gust"]
         z = x["weather"]
         wx_desc = z[0]["description"]
+
+        # Try to get wind gust speed, if available
+        wind_gust = None
+        try:
+            wind_gust = wind["gust"]
+        except KeyError:
+            # No wind gust measurement
+            pass
 
         # Try to get rain & snow measurements, if available
         rain = None
@@ -103,7 +110,10 @@ if api_key != "NULL":
         print(f"Pressure:\t\t{current_pressure} inches of mercury")
         print(f"Humidity:\t\t{current_humidity}%")
         print(
-            f"Wind speed is {wind_speed} MPH from the {wind_dir}, gusting up to {wind_gust} MPH.")
+            f"Wind speed is {wind_speed} MPH from the {wind_dir}.")
+
+        if wind_gust:
+            print(f"Wind gusting up to {wind_gust} MPH.")
 
         if rain:
             print(
