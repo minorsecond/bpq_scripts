@@ -21,14 +21,13 @@ except KeyError:
 # base_url variable to store url
 base_url = "http://api.openweathermap.org/data/2.5/weather?"
 
-call = input()
+call = input()  # capture BPQ call sign that is sent
 
 if api_key != "NULL":
-    zip_code = input("Enter zip code:")
+    zip_code = input("Enter zip code:").strip()
     complete_url = base_url + "appid=" + api_key + "&q=" + zip_code
     response = requests.get(complete_url)
     x = response.json()
-    print(zip_code)
 
     if x["cod"] != "404":
         y = x["main"]
