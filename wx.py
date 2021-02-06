@@ -54,7 +54,14 @@ if api_key != "NULL":
     complete_url = f"{base_url}zip={zip_code}&appid={api_key}&units=imperial"
     response = requests.get(complete_url)
     x = response.json()
-    city_name = x["name"]
+
+    city_name = None
+    try:
+        city_name = x["name"]
+    except KeyError:
+        # Couldn't get city
+        print("Sorry, couldn't find information for that zip code. Exiting.")
+        exit()
     lat = x['coord']['lat']
     lon = x['coord']['lon']
 
