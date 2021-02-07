@@ -6,7 +6,7 @@ import requests
 print(f"Hello, {input()}, and welcome to the solar information application.")
 
 solar_cycle_indices_url = "https://services.swpc.noaa.gov/json/solar-cycle/observed-solar-cycle-indices.json"
-predited_cycle_url = "https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json"
+predicted_cycle_url = "https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json"
 
 solar_cycles_by_year = requests.get(solar_cycle_indices_url).json()
 
@@ -47,6 +47,7 @@ for year_month in solar_cycles_by_year:
                                                            "smoothed_f10.7"])
 
 year = None
+requested_year = None
 while not year:
     requested_year = int(input(
         f"Enter the year between {min_year} and {max_year} for which you'd like information: "))
@@ -59,7 +60,7 @@ while not year:
 available_historical_months = historical_dates.get(requested_year)
 
 print(f"Make a selection from the available months for {requested_year} by "
-      f"selecting the leading number. Fore example, enter 1 for January")
+      f"selecting the leading number.\nFor example, enter 1 for January")
 
 month_counter = 0
 month_name = None
@@ -92,10 +93,10 @@ historical_smoothed_f10_7 = results[5]
 print("\n")
 print("================================================")
 print(f"Solar report for {month_name}, {requested_year}")
-print(f"International SSN:\t\t\t\t\t\t{historical_intl_ssn}")
-print(f"International Smoothed SSN:\t\t\t\t{historical_intl_smoothed_ssn}")
-print(f"SWPC SSN:\t\t\t\t\t\t\t\t{historical_swpc_ssn}")
-print(f"SWPC smoothed SSN:\t\t\t\t\t\t{historical_swpc_smoothed_ssn}")
-print(f"Historical F10.7 cm emissions:\t\t\t{historical_f10_7}")
+print(f"International SSN:\t\t\t{historical_intl_ssn}")
+print(f"International Smoothed SSN:\t\t{historical_intl_smoothed_ssn}")
+print(f"SWPC SSN:\t\t\t\t{historical_swpc_ssn}")
+print(f"SWPC smoothed SSN:\t\t\t{historical_swpc_smoothed_ssn}")
+print(f"Historical F10.7 cm emissions:\t\t{historical_f10_7}")
 print(f"Historical smoothed F10.7 cm emissions:\t{historical_smoothed_f10_7}")
 print("================================================")
