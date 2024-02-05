@@ -2,8 +2,9 @@
 # Get wx for zip code
 
 import configparser
-import os
 from datetime import datetime, timezone
+import os
+import sys
 
 import requests
 
@@ -54,6 +55,11 @@ if api_key != "NULL":
     complete_url = f"{base_url}zip={zip_code}&appid={api_key}&units=imperial"
     response = requests.get(complete_url)
     x = response.json()
+    response_code = x["cod"]
+
+    if response_code == 401:
+        print("Error: Unauthorized OpenWeatherAPI access. Please check your API key and ensure it is active.")
+        sys.exit()
 
     city_name = None
     try:
@@ -65,7 +71,7 @@ if api_key != "NULL":
     lat = x['coord']['lat']
     lon = x['coord']['lon']
 
-    if x["cod"] != "404":
+    if response_code == 200:
         timestamp = datetime.utcfromtimestamp(x["dt"])
         timestamp = timestamp.replace(tzinfo=timezone.utc).astimezone(
             tz=None).strftime("%Y-%m-%d %I:%M %p")
