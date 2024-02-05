@@ -1,4 +1,4 @@
-#!/bin/python
+#!/bin/python3
 # Get wx for zip code
 
 import configparser
