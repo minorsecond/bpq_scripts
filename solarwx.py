@@ -3,7 +3,8 @@
 
 import requests
 
-print(f"Hello, {input()}, and welcome to the solar information application.")
+callsign = input()
+print(f"Hello, {callsign}, and welcome to the solar information application.")
 
 solar_cycle_indices_url = "https://services.swpc.noaa.gov/json/solar-cycle/observed-solar-cycle-indices.json"
 predicted_cycle_url = "https://services.swpc.noaa.gov/json/solar-cycle/predicted-solar-cycle.json"
