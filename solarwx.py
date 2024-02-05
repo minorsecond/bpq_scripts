@@ -127,13 +127,15 @@ historical_swpc_ssn = results[2]
 historical_swpc_smoothed_ssn = results[3]
 historical_f10_7 = results[4]
 historical_smoothed_f10_7 = results[5]
-print("\n", flush=True)
-print("================================================", flush=True)
-print(f"Solar report for {month_name}, {requested_year}", flush=True)
-print(f"International SSN:\t\t\t{historical_intl_ssn}", flush=True)
-print(f"International Smoothed SSN:\t\t{historical_intl_smoothed_ssn}", flush=True)
-print(f"SWPC SSN:\t\t\t\t{historical_swpc_ssn}", flush=True)
-print(f"SWPC smoothed SSN:\t\t\t{historical_swpc_smoothed_ssn}", flush=True)
-print(f"Historical F10.7 cm emissions:\t\t{historical_f10_7}", flush=True)
-print(f"Historical smoothed F10.7 cm emissions:\t{historical_smoothed_f10_7}", flush=True)
-print("================================================", flush=True)
+print(flush=True)
+print("=" * 50, flush=True)
+print(f"Solar Report for {month_name}, {requested_year}", flush=True)
+print("-" * 50, flush=True)
+print(f"International SSN:                {historical_intl_ssn}", flush=True)
+print(f"International Smoothed SSN:       {historical_intl_smoothed_ssn}", flush=True)
+print(f"SWPC SSN:                         {historical_swpc_ssn}", flush=True)
+print(f"SWPC Smoothed SSN:                {historical_swpc_smoothed_ssn}", flush=True)
+print(f"Historical F10.7 cm Emissions:    {historical_f10_7}", flush=True)
+print(f"Historical Smoothed F10.7 cm Emissions: {historical_smoothed_f10_7}", flush=True)
+print("=" * 50, flush=True)
+
