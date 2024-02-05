@@ -92,17 +92,33 @@ for historical_month in available_historical_months:
 
 month = None
 requested_month = None
+requested_month_padded = None
+invalid_attempts = 0
 
 while not month:
-    requested_month = input("Month selection: ").zfill(2)
-    print(requested_month)
-    if requested_month == str(00):
+    if invalid_attempts >= 3:
+        print("Too many invalid attempts. Exiting.")
         exit()
-    elif requested_month in [str(month).zfill(2) for month in
-                             available_historical_months]:
-        month = requested_month
 
-search_string = f"{requested_year}-{requested_month}"
+    try:
+        requested_month_int = int(input("Month selection (1-12): "))
+        requested_month_padded = str(requested_month_int).zfill(2)
+
+        if requested_month_int == 0:
+            print("Exiting.")
+            exit()
+
+        if requested_month_int in available_historical_months:
+            month = requested_month_padded
+        else:
+            print(f"Invalid month. Please choose from the available months for {requested_year}.")
+            invalid_attempts += 1
+
+    except ValueError:  # Non-integer input
+        print("Please enter a valid number for the month.")
+        invalid_attempts += 1
+
+search_string = f"{requested_year}-{requested_month_padded}"
 
 results = historical_solar_cycles.get(search_string)
 historical_intl_ssn = results[0]
