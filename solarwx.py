@@ -59,7 +59,7 @@ while not year:
             f"Enter the year between {min_year} and {max_year} for which you'd like information or '0' to exit: ")
 
         if requested_year_input.strip() == '0':
-            print("Exiting the program.")
+            print("Exiting the program.", flush=True)
             exit()
 
         requested_year = int(requested_year_input)
@@ -67,21 +67,21 @@ while not year:
         if min_year <= requested_year <= max_year:
             year = requested_year
         else:
-            print(f"Invalid year. Please enter a year between {min_year} and {max_year}.")
+            print(f"Invalid year. Please enter a year between {min_year} and {max_year}.", flush=True)
             invalid_attempts += 1
 
     except ValueError:
-        print("Invalid input. Please enter a numeric year.")
+        print("Invalid input. Please enter a numeric year.", flush=True)
         invalid_attempts += 1
 
     if invalid_attempts >= 3:
-        print("Too many invalid attempts. Exiting the program.")
+        print("Too many invalid attempts. Exiting the program.", flush=True)
         exit()
 
 available_historical_months = historical_dates.get(requested_year)
 
 print(f"Make a selection from the available months for {requested_year} by "
-      f"selecting the leading number.\nFor example, enter 1 for January")
+      f"selecting the leading number.\nFor example, enter 1 for January", flush=True)
 
 month_counter = 0
 month_name = None
@@ -97,7 +97,7 @@ invalid_attempts = 0
 
 while not month:
     if invalid_attempts >= 3:
-        print("Too many invalid attempts. Exiting.")
+        print("Too many invalid attempts. Exiting.", flush=True)
         exit()
 
     try:
@@ -105,17 +105,17 @@ while not month:
         requested_month_padded = str(requested_month_int).zfill(2)
 
         if requested_month_int == 0:
-            print("Exiting.")
+            print("Exiting.", flush=True)
             exit()
 
         if requested_month_int in available_historical_months:
             month = requested_month_padded
         else:
-            print(f"Invalid month. Please choose from the available months for {requested_year}.")
+            print(f"Invalid month. Please choose from the available months for {requested_year}.", flush=True)
             invalid_attempts += 1
 
     except ValueError:  # Non-integer input
-        print("Please enter a valid number for the month.")
+        print("Please enter a valid number for the month.", flush=True)
         invalid_attempts += 1
 
 search_string = f"{requested_year}-{requested_month_padded}"
