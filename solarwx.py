@@ -48,14 +48,35 @@ for year_month in solar_cycles_by_year:
 
 year = None
 requested_year = None
+invalid_attempts = 0
+
+year = None
+requested_year = None
+
 while not year:
-    requested_year = int(input(
-        f"Enter the year between {min_year} and {max_year} for which you'd like information: "))
-    if requested_year == 0:
+    try:
+        requested_year_input = input(
+            f"Enter the year between {min_year} and {max_year} for which you'd like information or '0' to exit: ")
+
+        if requested_year_input.strip() == '0':
+            print("Exiting the program.")
+            exit()
+
+        requested_year = int(requested_year_input)
+
+        if min_year <= requested_year <= max_year:
+            year = requested_year
+        else:
+            print(f"Invalid year. Please enter a year between {min_year} and {max_year}.")
+            invalid_attempts += 1
+
+    except ValueError:
+        print("Invalid input. Please enter a numeric year.")
+        invalid_attempts += 1
+
+    if invalid_attempts >= 3:
+        print("Too many invalid attempts. Exiting the program.")
         exit()
-    elif requested_year in [*range(min_year, max_year + 1, 1)] and type(
-            requested_year) == int:
-        year = requested_year
 
 available_historical_months = historical_dates.get(requested_year)
 
